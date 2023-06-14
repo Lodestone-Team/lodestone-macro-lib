@@ -3,9 +3,9 @@ import { createBot, Intents } from "https://deno.land/x/discordeno@18.0.1/mod.ts
 
 import { sendMessage } from "https://deno.land/x/discordeno@18.0.1/mod.ts";
 
-import { detach, nextInstanceConsoleOut } from "/home/peter/dev/backend/src/deno_ops/events/events.ts";
+import { detach, nextInstanceConsoleOut } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/events.ts";
 
-import { getInstanceName } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/instance_control/instance_control.ts";
+import { getInstanceName } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/instance_control.ts";
 
 const TOKEN = '';
 const CHANNEL_ID = '';
