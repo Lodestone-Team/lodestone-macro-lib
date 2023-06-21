@@ -25,12 +25,12 @@ export class Rcon {
      * @returns A Rcon instance if successful.
      * 
      */
-    static async tryAcquire(): Promise<Rcon> {
-        const game = await getInstanceGame();
+    static async tryAcquire(instanceUuid? : string): Promise<Rcon> {
+        const game = await getInstanceGame(instanceUuid);
         if (game.type !== "MinecraftJava") {
             throw "Unsupported";
         }
-        if (await isRconAvailable()) {
+        if (await isRconAvailable(instanceUuid)) {
             return new Rcon();
         } else {
             throw "Unavailable";
@@ -44,12 +44,12 @@ export class Rcon {
      * 
      * Note: This function will resolve only when rcon is available via busy polling.
      */
-    static async acquire(): Promise<Rcon> {
-        const game = await getInstanceGame();
+    static async acquire(instanceUuid? : string): Promise<Rcon> {
+        const game = await getInstanceGame(instanceUuid);
         if (game.type !== "MinecraftJava") {
             throw "Unsupported";
         }
-        await waitTillRconAvailable();
+        await waitTillRconAvailable(instanceUuid);
         return new Rcon();
     }
 
