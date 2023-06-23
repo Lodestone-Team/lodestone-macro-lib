@@ -1,3 +1,4 @@
+import { instanceUUID } from "./prelude.ts";
 import { getInstanceGame, isRconAvailable, sendRconCommand, waitTillRconAvailable } from "./instance_control.ts";
 
 export type RconAcquisitionError = "Unsupported" | "Unavailable" | "Unknown";
@@ -8,7 +9,10 @@ export type RconAcquisitionError = "Unsupported" | "Unavailable" | "Unknown";
  * This class is a ZST (Zero-Sized-Type), meaning that it has no fields and is only used for type checking and to prove, to some degree, that the Rcon connection is valid.
  */
 export class Rcon {
-    private constructor() { }
+    instanceUuid: string;
+    private constructor(instanceUuid: string) {
+        this.instanceUuid = instanceUuid;
+    }
     /**
      * Attempts to acquire a Rcon connection.
      * 
@@ -25,13 +29,13 @@ export class Rcon {
      * @returns A Rcon instance if successful.
      * 
      */
-    static async tryAcquire(instanceUuid? : string): Promise<Rcon> {
+    static async tryAcquire(instanceUuid?: string): Promise<Rcon> {
         const game = await getInstanceGame(instanceUuid);
         if (game.type !== "MinecraftJava") {
             throw "Unsupported";
         }
         if (await isRconAvailable(instanceUuid)) {
-            return new Rcon();
+            return new Rcon(instanceUuid ?? instanceUUID()!);
         } else {
             throw "Unavailable";
         }
@@ -44,21 +48,21 @@ export class Rcon {
      * 
      * Note: This function will resolve only when rcon is available via busy polling.
      */
-    static async acquire(instanceUuid? : string): Promise<Rcon> {
+    static async acquire(instanceUuid?: string): Promise<Rcon> {
         const game = await getInstanceGame(instanceUuid);
         if (game.type !== "MinecraftJava") {
             throw "Unsupported";
         }
         await waitTillRconAvailable(instanceUuid);
-        return new Rcon();
+        return new Rcon(instanceUuid ?? instanceUUID()!);
     }
 
 
     async isOpen(): Promise<boolean> {
-        return await isRconAvailable();
+        return await isRconAvailable(this.instanceUuid);
     }
     async send(command: string): Promise<string> {
-        return await sendRconCommand(command);
+        return await sendRconCommand(command, this.instanceUuid);
     }
 }
 
