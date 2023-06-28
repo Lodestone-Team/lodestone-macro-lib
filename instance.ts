@@ -1,5 +1,5 @@
 
-import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, instanceUUID } from './instance_control.ts';
+import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, instanceUUID, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart } from './instance_control.ts';
 
 export class Instance {
     uuid!: string;
@@ -48,6 +48,36 @@ export class Instance {
     }
     public async playerList(): Promise<Player[]> {
         return await getInstancePlayerList(this.uuid);
+    }
+    public async name(): Promise<string> {
+        return await getInstanceName(this.uuid);
+    }
+    public async game(): Promise<Game> {
+        return await getInstanceGame(this.uuid);
+    }
+    public async gameVersion(): Promise<string> {
+        return await getInstanceGameVersion(this.uuid);
+    }
+    public async description(): Promise<string> {
+        return await getInstanceDescription(this.uuid);
+    }
+    public async port(): Promise<number> {
+        return await getInstancePort(this.uuid);
+    }
+    public async path(): Promise<string> {
+        return await getInstancePath(this.uuid);
+    }
+    public async setName(name: string): Promise<void> {
+        await setInstanceName(name, this.uuid);
+    }
+    public async setDescription(description: string): Promise<void> {
+        await setInstanceDescription(description, this.uuid);
+    }
+    public async setInstancePort(port: number): Promise<void> {
+        await setInstancePort(port, this.uuid);
+    }
+    public async setAutoStart(autoStart: boolean): Promise<void> {
+        await setInstanceAutoStart(autoStart, this.uuid);
     }
 
 }
