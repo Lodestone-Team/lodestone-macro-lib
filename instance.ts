@@ -1,5 +1,5 @@
 
-import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, instanceUUID, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart } from './instance_control.ts';
+import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, getCurrentInstanceUUID, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart } from 'https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/instance_control/instance_control.ts';
 
 export class Instance {
     uuid!: string;
@@ -11,7 +11,7 @@ export class Instance {
         }
     }
     public static async current(): Promise<Instance> {
-        return new Instance(instanceUUID()!)
+        return new Instance(getCurrentInstanceUUID()!)
     }
     public async start(block: boolean): Promise<void> {
         await startInstance(block, this.uuid);
@@ -87,14 +87,14 @@ export class MinecraftJavaInstance extends Instance {
         super(uuid);
     }
     public static override async current(): Promise<MinecraftJavaInstance> {
-        return await this.new(instanceUUID()!);
+        return await this.new(getCurrentInstanceUUID()!);
     }
 
     public static async new(uuid: string): Promise<MinecraftJavaInstance> {
         if (await (await getInstanceGame(uuid)).type !== "MinecraftJava") {
             throw new Error("Current instance is not a MinecraftJava instance");
         }
-        return new MinecraftJavaInstance(instanceUUID()!);
+        return new MinecraftJavaInstance(getCurrentInstanceUUID()!);
     }
 
     public async waitTillRconAvailable(): Promise<void> {
