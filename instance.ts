@@ -25,7 +25,7 @@ export class Instance {
     public async kill(): Promise<void> {
         await killInstance(this.uuid);
     }
-    async state(): Promise<InstanceState> {
+    public async state(): Promise<InstanceState> {
         return await getInstanceState(this.uuid);
     }
     public async isRunning(): Promise<boolean> {
