@@ -1,5 +1,5 @@
 
-import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, getCurrentInstanceUUID, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart } from 'https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/instance_control/instance_control.ts';
+import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, getCurrentInstanceUUID, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart, trySendRconCommand } from 'https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/instance_control/instance_control.ts';
 
 export class Instance {
     uuid!: string;
@@ -106,7 +106,7 @@ export class MinecraftJavaInstance extends Instance {
     }
 
     public async trySendRconCommand(command: string): Promise<string | null> {
-        return await sendRconCommand(command, this.uuid)
+        return await trySendRconCommand(command, this.uuid)
     }
 
     public async sendRconCommand(command: string): Promise<string> {
