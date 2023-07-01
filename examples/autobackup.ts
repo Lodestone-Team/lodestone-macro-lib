@@ -1,20 +1,29 @@
 import { format } from "https://deno.land/std@0.177.1/datetime/format.ts";
 import { copy } from "https://deno.land/std@0.191.0/fs/copy.ts";
 import { sleep } from "https://deno.land/x/sleep@v1.2.1/mod.ts";
-import { detach, emitConsoleOut } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/events.ts";
-import { getInstancePath, getInstanceState } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/instance_control.ts";
+import { EventStream } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/events.ts";
+import { lodestoneVersion } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/prelude.ts";
+import { MinecraftJavaInstance } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/instance.ts";
+
+if (lodestoneVersion() !== "0.5.0-beta.1") {
+    throw new Error("This macro requires lodestone version 0.5.0-beta.1");
+}
+
+const currentInstance = await MinecraftJavaInstance.current();
+
+const eventStream = new EventStream(currentInstance.getUUID(), await currentInstance.name());
 
 const backupFolderRelative = "backups";
 
 const delaySec = 60 * 60;
 
-const instancePath = await getInstancePath();
+const instancePath = await currentInstance.path();
 const backupFolder = `${instancePath}/${backupFolderRelative}`;
-detach();
+EventStream.emitDetach();
 while (true) {
-    emitConsoleOut("[Backup Macro] Backing up world...");
-    if (await getInstanceState() == "Stopped") {
-        emitConsoleOut("[Backup Macro] Instance stopped, exiting...");
+    eventStream.emitConsoleOut("[Backup Macro] Backing up world...");
+    if (await currentInstance.state() == "Stopped") {
+        eventStream.emitConsoleOut("[Backup Macro] Instance stopped, exiting...");
         break;
     }
 
@@ -28,3 +37,4 @@ while (true) {
 
     await sleep(delaySec);
 }
+

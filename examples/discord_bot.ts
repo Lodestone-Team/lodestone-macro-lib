@@ -3,9 +3,18 @@ import { createBot, Intents } from "https://deno.land/x/discordeno@18.0.1/mod.ts
 
 import { sendMessage } from "https://deno.land/x/discordeno@18.0.1/mod.ts";
 
-import { detach, nextInstanceConsoleOut } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/events.ts";
+import { EventStream } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/events.ts";
 
-import { getInstanceName } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/instance_control.ts";
+import { lodestoneVersion } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/prelude.ts";
+import { Instance } from "../instance.ts";
+
+if (lodestoneVersion() !== "0.5.0-beta.2") {
+    throw new Error("This macro requires lodestone version 0.5.0-beta.2");
+}
+
+const current = await Instance.current();
+const eventStream = new EventStream(current.getUUID(), await current.name());
+const instanceName = await current.name();
 
 const TOKEN = '';
 const CHANNEL_ID = '';
@@ -22,12 +31,11 @@ const bot = createBot({
 
 console.log("bot created")
 
-detach();
+EventStream.emitDetach();
 
-const instanceName = await getInstanceName();
 
 while (true) {
-    const msg = await nextInstanceConsoleOut();
+    const msg = await eventStream.nextConsoleOut();
     sendMessage(bot, CHANNEL_ID, {
         content: `[${instanceName}] ${msg}`
     });
