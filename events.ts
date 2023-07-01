@@ -31,6 +31,9 @@ export class EventStream {
     public async emitStateChange(state: EventOps.InstanceState): Promise<void> {
         await EventOps.emitStateChange(state, this.instanceName, this.instanceUuid);
     }
+    public async emitConsoleOut(message: string): Promise<void> {
+        await EventOps.emitConsoleOut(message, this.instanceUuid);
+    }
     public async nextInstanceEvent(): Promise<EventOps.InstanceEvent> {
         return await EventOps.nextInstanceEvent(this.instanceUuid);
     }
