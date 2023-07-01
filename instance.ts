@@ -11,6 +11,9 @@ export class Instance {
             throw new Error("Instance does not exist");
         }
     }
+    public getUUID(): string {
+        return this.uuid;
+    }
     public static async current(): Promise<Instance> {
         return new Instance(getCurrentInstanceUUID()!)
     }
