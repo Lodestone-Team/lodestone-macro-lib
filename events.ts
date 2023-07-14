@@ -69,7 +69,7 @@ export class EventStream {
             instance_uuid: this.instanceUuid
         });
         try {
-            await onUpdate(Progression.__private__create(this.instanceUuid));
+            await onUpdate(Progression.__private__create(id));
         } catch (e) {
             EventOps.emitProgressionEventEnd(id, false, `Error creating instance: ${e}`, null);
             return;
