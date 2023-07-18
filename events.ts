@@ -1,17 +1,24 @@
 
+import { ProgressionEventID } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/deno_bindings/ProgressionEventID.ts";
 import * as EventOps from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/events/events.ts"
 import { getCurrentTaskPid } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/prelude/prelude.ts";
 
-export class Progression {
-    private progression_event_id: string;
-    private constructor(progression_event_id: string) {
+export class ProgressionHandler {
+    private progression_event_id: ProgressionEventID;
+    // hard coded value in backend
+    private total_progress = 100;
+    private constructor(progression_event_id: ProgressionEventID) {
         this.progression_event_id = progression_event_id;
     }
-    static __private__create(progression_event_id: string) {
-        return new Progression(progression_event_id);
+    static __private__create(progression_event_id: ProgressionEventID) {
+        return new ProgressionHandler(progression_event_id);
     }
-    public update(progress: number, message: string) {
+    public update(progress: number, message: ProgressionEventID) {
+        this.total_progress -= progress;
         EventOps.emitProgressiontEventUpdate(this.progression_event_id, message, progress);
+    }
+    public leftOverProgress(): number {
+        return this.total_progress;
     }
 }
 
@@ -61,19 +68,5 @@ export class EventStream {
     }
     public async nextPlayerMessage(): Promise<EventOps.PlayerMessage> {
         return await EventOps.nextPlayerMessage(this.instanceUuid);
-    }
-    public async instanceCreationProgression(total: number | null = 100, onUpdate: (progression: Progression) => Promise<void>): Promise<void> {
-        const id = EventOps.emitProgressionEventStart(`Setting up ${this.instanceName
-            }`, total, {
-            type: "InstanceCreation",
-            instance_uuid: this.instanceUuid
-        });
-        try {
-            await onUpdate(Progression.__private__create(id));
-        } catch (e) {
-            EventOps.emitProgressionEventEnd(id, false, `Error creating instance: ${e}`, null);
-            return;
-        }
-        EventOps.emitProgressionEventEnd(id, true, `${this.instanceName} created successfully`, null);
     }
 }
