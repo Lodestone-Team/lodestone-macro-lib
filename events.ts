@@ -14,17 +14,24 @@ export class ProgressionHandler {
     static __private__create(progression_event_id: ProgressionEventID) {
         return new ProgressionHandler(progression_event_id);
     }
-    public addProgress(progress: number, message: string) {
+    public addProgress(progress: number, message: string | ((elapsed: number, remaining : number) => string)) {
         this._elapsedProgress += progress;
-        EventOps.emitProgressiontEventUpdate(this.progression_event_id, message, progress);
+        let msg;
+        if (typeof message === "string") {
+            msg = message;
+        }
+        else {
+            msg = message(this._elapsedProgress, ProgressionHandler.MAX_PROGRESS - this._elapsedProgress);
+        }
+        EventOps.emitProgressiontEventUpdate(this.progression_event_id, msg, progress);
     }
-    public setProgress(progress: number, message: string) {
+    public setProgress(progress: number, message: string | ((elapsed: number, remaining : number) => string)) {
         // calculate the difference between the current progress and the new progress
         const diff = progress - this._elapsedProgress;
         this.addProgress(diff, message);
     }
 
-    public leftOverProgress(): number {
+    public remainingProgress(): number {
         return ProgressionHandler.MAX_PROGRESS - this._elapsedProgress;
     }
     public elapsedProgress(): number {
