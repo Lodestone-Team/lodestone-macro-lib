@@ -5,8 +5,8 @@ import { EventStream } from "https://raw.githubusercontent.com/Lodestone-Team/lo
 import { lodestoneVersion } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/prelude.ts";
 import { MinecraftJavaInstance } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone-macro-lib/main/instance.ts";
 
-if (lodestoneVersion() !== "0.5.0-beta.1") {
-    throw new Error("This macro requires lodestone version 0.5.0-beta.1");
+if (lodestoneVersion() !== "0.5.0-beta.2") {
+    throw new Error("This macro requires lodestone version 0.5.0-beta.2");
 }
 
 const currentInstance = await MinecraftJavaInstance.current();
