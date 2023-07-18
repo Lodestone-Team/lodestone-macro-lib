@@ -1,7 +1,7 @@
 
-import { ProgressionEventID } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/deno_bindings/ProgressionEventID.ts";
-import * as EventOps from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/events/events.ts"
-import { getCurrentTaskPid } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/prelude/prelude.ts";
+import { ProgressionEventID } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/deno_bindings/ProgressionEventID.ts";
+import * as EventOps from "https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/src/deno_ops/events/events.ts"
+import { getCurrentTaskPid } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/src/deno_ops/prelude/prelude.ts";
 
 export class ProgressionHandler {
     private progression_event_id: ProgressionEventID;

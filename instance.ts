@@ -1,6 +1,6 @@
 
-import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart, trySendRconCommand, sendCommand } from 'https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/instance_control/instance_control.ts';
-import { getCurrentInstanceUUID } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/prelude/prelude.ts";
+import { startInstance, instanceExists, stopInstance, killInstance, restartInstance, getInstanceState, getInstancePlayerCount, getInstanceMaxPlayers, getInstancePlayerList, sendRconCommand, getInstanceGame, isRconAvailable, InstanceState, Player, waitTillRconAvailable, getInstanceName, Game, getInstanceGameVersion, getInstanceDescription, getInstancePort, getInstancePath, setInstanceName, setInstanceDescription, setInstancePort, setInstanceAutoStart, trySendRconCommand, sendCommand } from 'https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/src/deno_ops/instance_control/instance_control.ts';
+import { getCurrentInstanceUUID } from "https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/src/deno_ops/prelude/prelude.ts";
 
 export class Instance {
     uuid!: string;

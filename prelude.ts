@@ -1,1 +1,1 @@
-export * from "https://raw.githubusercontent.com/Lodestone-Team/lodestone_core/dev/src/deno_ops/prelude/prelude.ts"
+export * from "https://raw.githubusercontent.com/Lodestone-Team/lodestone/dev/core/src/deno_ops/prelude/prelude.ts"
