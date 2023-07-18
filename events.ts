@@ -6,20 +6,31 @@ import { getCurrentTaskPid } from "https://raw.githubusercontent.com/Lodestone-T
 export class ProgressionHandler {
     private progression_event_id: ProgressionEventID;
     // hard coded value in backend
-    private total_progress = 100;
+    private _elapsedProgress = 0;
+    public static readonly MAX_PROGRESS = 100;
     private constructor(progression_event_id: ProgressionEventID) {
         this.progression_event_id = progression_event_id;
     }
     static __private__create(progression_event_id: ProgressionEventID) {
         return new ProgressionHandler(progression_event_id);
     }
-    public update(progress: number, message: ProgressionEventID) {
-        this.total_progress -= progress;
+    public addProgress(progress: number, message: string) {
+        this._elapsedProgress += progress;
         EventOps.emitProgressiontEventUpdate(this.progression_event_id, message, progress);
     }
-    public leftOverProgress(): number {
-        return this.total_progress;
+    public setProgress(progress: number, message: string) {
+        // calculate the difference between the current progress and the new progress
+        const diff = progress - this._elapsedProgress;
+        this.addProgress(diff, message);
     }
+
+    public leftOverProgress(): number {
+        return ProgressionHandler.MAX_PROGRESS - this._elapsedProgress;
+    }
+    public elapsedProgress(): number {
+        return this._elapsedProgress;
+    }
+
 }
 
 export class EventStream {
