@@ -28,6 +28,11 @@ export class ProgressionHandler {
         this.progression_event_id = progression_event_id;
         this.TOTAL_PROGRESS = total_progress;
     }
+    // internal use only
+    // create a handle but not emit the event
+    public static __private__create(progression_event_id: ProgressionEventID, total_progress: number): ProgressionHandler {
+        return new ProgressionHandler(progression_event_id, total_progress);
+    }
     /**
      * Creates a progression event.
      * 
